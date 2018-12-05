@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: eureka-ribbon-client
+server:
+  port: 8760
+eureka:
+  client:
+    serviceUrl:
+      defaulatZone: http://peer1:8761/eureka,http://peer2:8762/eureka
