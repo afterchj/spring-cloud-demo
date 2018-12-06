@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/afterchj/spring-could-demo
+          uri: https://github.com/afterchj/spring-cloud-demo
           search-paths: config
 #        native:
 #          search-locations: classpath:/shared
