@@ -4,12 +4,14 @@ spring:
   cloud:
     config:
       server:
+#        native:
+#          search-locations: classpath:/shared
         git:
           uri: https://github.com/afterchj/spring-cloud-demo
           search-paths: config
-#        native:
-#          search-locations: classpath:/shared
       label: master
+  profiles:
+    active: native
   application:
        name: config-server
 eureka:
@@ -18,6 +20,3 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 server:
   port: 8769
-
-#server:
-#  port: 8762

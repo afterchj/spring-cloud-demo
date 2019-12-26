@@ -46,7 +46,7 @@ public class MyFilter extends ZuulFilter {
                 System.out.println(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + " token is empty.");
                 out.write("Token is empty! ".getBytes());
             } else {
-                out.write(new String("Token is " + token + ". ").getBytes());
+                out.write(("Token is " + token + ". ").getBytes());
             }
         } catch (IOException e) {
             return null;

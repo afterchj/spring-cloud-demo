@@ -11,6 +11,7 @@ public class EurekaZuulClientApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("Hello World1");
 	}
 
 }
