@@ -4,12 +4,12 @@ spring:
   cloud:
     config:
       server:
-#        native:
-#          search-locations: classpath:/shared
-        git:
-          uri: https://github.com/afterchj/spring-cloud-demo
-          search-paths: config
-      label: master
+        native:
+          search-locations: classpath:/shared
+#        git:
+#          uri: https://github.com/afterchj/spring-cloud-demo
+#          search-paths: config
+#      label: master
   profiles:
     active: native
   application:
