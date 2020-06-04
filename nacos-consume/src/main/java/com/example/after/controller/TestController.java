@@ -13,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/echo")
 public class TestController {
-
-
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -27,4 +25,8 @@ public class TestController {
         return restTemplate.getForObject("http://nacos-test/echo/" + str, String.class);
     }
 
+    @RequestMapping(value = "/config", method = RequestMethod.GET)
+    public String echoConfig() {
+        return restTemplate.getForObject("http://nacos-test/showConfig/", String.class);
+    }
 }

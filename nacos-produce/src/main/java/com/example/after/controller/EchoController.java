@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/echo")
 public class EchoController {
-
     @RequestMapping(value = "/{string}", method = RequestMethod.GET)
     public String echo(@PathVariable String string) {
         return "Hello Nacos Discovery " + string;
     }
-
 }
