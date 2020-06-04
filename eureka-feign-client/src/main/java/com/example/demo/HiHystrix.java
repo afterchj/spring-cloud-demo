@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Component
 public class HiHystrix implements EurekaClientFeign {
     @Override
-    public String sayHiFromEurekaClient(@RequestParam(value = "name",defaultValue = "hystrix") String name) {
+    public String sayHiFromEurekaClient(@RequestParam(value = "name", defaultValue = "hystrix") String name) {
         return "Hi," + name + ",sorry,error";
     }
 }
