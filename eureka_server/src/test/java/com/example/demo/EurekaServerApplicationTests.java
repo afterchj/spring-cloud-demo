@@ -11,6 +11,8 @@ public class EurekaServerApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		String str = String.format("test_%s", null);
+		System.out.println(str);
 	}
 
 }
