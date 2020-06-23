@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import static org.springframework.cloud.netflix.zuul.filters.support.FilterConst
  */
 
 @Component
+@Slf4j
 public class MyFilter extends ZuulFilter {
     @Override
     public String filterType() {
@@ -43,7 +45,7 @@ public class MyFilter extends ZuulFilter {
             HttpServletRequest request = ctx.getRequest();
             Object token = request.getParameter("token");
             if (null == token) {
-                System.out.println(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + " token is empty.");
+                log.warn(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + " token is empty.");
                 out.write("Token is empty! ".getBytes());
             } else {
                 out.write(("Token is " + token + ". ").getBytes());
