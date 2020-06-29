@@ -59,12 +59,11 @@ public class CodeClientController {
                 .post(body)
                 .addHeader("Authorization", "Basic Y29kZS1jbGllbnQ6Y29kZS1zZWNyZXQtODg4OA==")
                 .build();
-        Response response = null;
+        Response response;
         String result = "";
         try {
             response = httpClient.newCall(request).execute();
             result = response.body().string();
-            log.warn("result {}", result);
             ObjectMapper objectMapper = new ObjectMapper();
             Map tokenMap = objectMapper.readValue(result, Map.class);
             String accessToken = tokenMap.get("access_token").toString();
@@ -74,7 +73,7 @@ public class CodeClientController {
                     .getBody();
             String userName = claims.get("user_name").toString();
             model.addAttribute("username", userName);
-            model.addAttribute("accessToken", accessToken);
+            model.addAttribute("accessToken", result);
         } catch (Exception e) {
             model.addAttribute("username", "admin");
             model.addAttribute("accessToken", result);
@@ -89,9 +88,14 @@ public class CodeClientController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public Object get(Authentication authentication) {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authentication.getCredentials();
+        Object credentials = authentication.getCredentials();
+        log.warn("credentials {}", credentials);
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
         String token = details.getTokenValue();
-        return token;
+        Claims claims = Jwts.parser()
+                .setSigningKey("dev".getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token)
+                .getBody();
+        return claims;
     }
 }
