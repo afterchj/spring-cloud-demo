@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -27,21 +28,29 @@ public class CodeClientController {
 
     /**
      * 用来展示index.html 模板
+     *
      * @return
      */
-    @GetMapping(value = "index")
-    public String index(){
+    @GetMapping(value = "/index")
+    public String index() {
         return "index";
     }
 
-    @GetMapping(value = "login")
-    public Object login(String code,Model model) {
+    @ResponseBody
+    @GetMapping(value = "/login")
+    public String login(String code) {
+        return "code:" + code;
+    }
+
+    @GetMapping(value = "/jwt")
+    public Object login(String code, Model model) {
         String tokenUrl = "http://localhost:6001/oauth/token";
+//        String tokenUrl = "http://localhost:18084/oauth/token";
         OkHttpClient httpClient = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
                 .add("client", "code-client")
-                .add("redirect_uri","http://localhost:6102/client-authcode/login")
+                .add("redirect_uri", "http://localhost:6102/client-authcode/login")
                 .add("code", code)
                 .build();
 
@@ -50,11 +59,14 @@ public class CodeClientController {
                 .post(body)
                 .addHeader("Authorization", "Basic Y29kZS1jbGllbnQ6Y29kZS1zZWNyZXQtODg4OA==")
                 .build();
+        Response response = null;
+        String result = "";
         try {
-            Response response = httpClient.newCall(request).execute();
-            String result = response.body().string();
+            response = httpClient.newCall(request).execute();
+            result = response.body().string();
+            log.warn("result {}", result);
             ObjectMapper objectMapper = new ObjectMapper();
-            Map tokenMap = objectMapper.readValue(result,Map.class);
+            Map tokenMap = objectMapper.readValue(result, Map.class);
             String accessToken = tokenMap.get("access_token").toString();
             Claims claims = Jwts.parser()
                     .setSigningKey("dev".getBytes(StandardCharsets.UTF_8))
@@ -62,17 +74,18 @@ public class CodeClientController {
                     .getBody();
             String userName = claims.get("user_name").toString();
             model.addAttribute("username", userName);
-            model.addAttribute("accessToken", result);
-            return "index";
+            model.addAttribute("accessToken", accessToken);
         } catch (Exception e) {
-            e.printStackTrace();
+            model.addAttribute("username", "admin");
+            model.addAttribute("accessToken", result);
+            log.error("Exception {}", e);
         }
-        return null;
+        return "index";
     }
 
 
     @ResponseBody
-    @GetMapping(value = "get")
+    @GetMapping(value = "/get")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public Object get(Authentication authentication) {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -81,5 +94,4 @@ public class CodeClientController {
         String token = details.getTokenValue();
         return token;
     }
-
 }

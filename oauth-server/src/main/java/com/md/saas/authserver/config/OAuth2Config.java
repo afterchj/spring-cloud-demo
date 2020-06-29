@@ -2,6 +2,7 @@ package com.md.saas.authserver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,7 +76,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                  */
                 .authenticationManager(authenticationManager)
                 .tokenEnhancer(enhancerChain)
-                .accessTokenConverter(jwtAccessTokenConverter);
+                .accessTokenConverter(jwtAccessTokenConverter)
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST); //支持GET  POST  请求获取token;;
 
         /**
          * redis token 方式
