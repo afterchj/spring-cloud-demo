@@ -17,3 +17,4 @@ public interface EurekaClientFeign {
     String sayHiFromEurekaClient(@RequestParam(value = "name",defaultValue = "feign") String name);
 }
 
+
