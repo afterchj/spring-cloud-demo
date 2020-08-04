@@ -1,8 +1,7 @@
 package com.example.demo;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.Entity.SearchDict;
-import com.example.demo.Entity.dd.ResultDict;
+import com.example.demo.entitys.dd.ResultDict;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 

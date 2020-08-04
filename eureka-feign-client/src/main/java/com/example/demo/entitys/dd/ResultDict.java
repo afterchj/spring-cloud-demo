@@ -1,4 +1,4 @@
-package com.example.demo.Entity.dd;
+package com.example.demo.entitys.dd;
 
 public enum ResultDict {
 

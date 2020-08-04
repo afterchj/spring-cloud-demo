@@ -1,0 +1,10 @@
+
+#log��ӡ��ʽ
+logging:
+  pattern:
+    console: '%d - %p %c:%L %m%n'
+spring:
+  profiles: dev
+  redis:
+    host: 127.0.0.1
+    password: '@after'
