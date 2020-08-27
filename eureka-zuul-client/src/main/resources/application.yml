@@ -1,33 +1,44 @@
 eureka:
   instance:
+    hostname: zuul
     prefer-ip-address: true
-    hostname: localhost
+    ip-address: 47.111.232.105
+#    ip-address: 192.168.1.37
   client:
-    serviceUrl:
-#      defaultZone: http://192.168.1.37:8761/eureka #,http://localhost:8762/eureka
+    service-url:
+#      defaultZone: http://test:123456@0.0.0.0:8761/eureka/
       defaultZone: http://test:123456@47.111.232.105:8761/eureka/
 server:
-  port: 7000
+  port: 8769
 spring:
   application:
-    name: service-zuul2
+    name: service-zuul
 zuul:
   routes:
-    projectapi:
-      path: /ssm/**
-      serviceId: project-manager
-    ribbonapi:
-      path: /uic/**
-      serviceId: smart-user
-    feignapi:
-      path: /feign/**
-      serviceId: eureka-feign-client
-    userapi:
+    api-dujunjie-test:
+      path: /dujunjie-test/**
+      serviceId: dujunjie-test
+    api-login-authority-system:
+      path: /login-authority-system/**
+      serviceId: login-authority-system
+    api-organization:
       path: /organization/**
       serviceId: organization
-    user2api:
+    api-organization2:
       path: /organization2/**
       serviceId: organization2
+    api-project-manager:
+      path: /ssm/**
+      serviceId: project-manager
+    api-crm:
+      path: /crm/**
+      serviceId: crm-system
+    api-BASIC:
+      path: /basic/**
+      serviceId: BASIC
+    api-process:
+      path: /process/**
+      serviceId: process
 #  prefix: /V1
 
 

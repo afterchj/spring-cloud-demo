@@ -18,7 +18,7 @@ import static org.springframework.cloud.netflix.zuul.filters.support.FilterConst
  * Created by hongjian.chen on 2018/12/5.
  */
 
-@Component
+//@Component
 @Slf4j
 public class MyFilter extends ZuulFilter {
     @Override
