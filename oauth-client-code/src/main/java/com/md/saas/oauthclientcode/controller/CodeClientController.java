@@ -52,7 +52,7 @@ public class CodeClientController {
         RequestBody body = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
                 .add("client", "order-client")
-                .add("redirect_uri", "http://localhost:6102/client-authcode/login")
+                .add("redirect_uri", "http://localhost:6102/client-authcode/jwt")
                 .add("code", code)
                 .build();
         String authorization_code = "Basic " + Base64.getEncoder().encodeToString("order-client:order-secret-8888".getBytes());

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <a href="http://localhost:6001/oauth/authorize?client_id=order-client&response_type=code&redirect_uri=http://localhost:6102/client-authcode/login">授权</a>
+    <a href="http://localhost:6001/oauth/authorize?client_id=order-client&response_type=code&redirect_uri=http://localhost:6102/client-authcode/jwt">授权</a>
     <span th:text="'当前认证用户：' + ${username}"></span><br>
     <label>当前认证信息：</label><span th:text="${accessToken}"></span>
 </div>
