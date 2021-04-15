@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -43,43 +44,45 @@ public class CodeClientController {
     }
 
     @GetMapping(value = "/jwt")
-    public Object login(String code, Model model) {
+    @ResponseBody
+    public String jwt(String code) {
         String tokenUrl = "http://localhost:6001/oauth/token";
 //        String tokenUrl = "http://localhost:18084/oauth/token";
         OkHttpClient httpClient = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
-                .add("client", "code-client")
+                .add("client", "order-client")
                 .add("redirect_uri", "http://localhost:6102/client-authcode/login")
                 .add("code", code)
                 .build();
-
+        String authorization_code = "Basic " + Base64.getEncoder().encodeToString("order-client:order-secret-8888".getBytes());
+        log.warn("authorization_code {}", authorization_code);
         Request request = new Request.Builder()
                 .url(tokenUrl)
                 .post(body)
-                .addHeader("Authorization", "Basic Y29kZS1jbGllbnQ6Y29kZS1zZWNyZXQtODg4OA==")
+                .addHeader("Authorization", authorization_code)
                 .build();
         Response response;
         String result = "";
         try {
             response = httpClient.newCall(request).execute();
             result = response.body().string();
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map tokenMap = objectMapper.readValue(result, Map.class);
-            String accessToken = tokenMap.get("access_token").toString();
-            Claims claims = Jwts.parser()
-                    .setSigningKey("dev".getBytes(StandardCharsets.UTF_8))
-                    .parseClaimsJws(accessToken)
-                    .getBody();
-            String userName = claims.get("user_name").toString();
-            model.addAttribute("username", userName);
-            model.addAttribute("accessToken", result);
+            log.warn("response {}", result);
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            Map tokenMap = objectMapper.readValue(result, Map.class);
+//            String accessToken = tokenMap.get("access_token").toString();
+//            Claims claims = Jwts.parser()
+//                    .setSigningKey("dev".getBytes(StandardCharsets.UTF_8))
+//                    .parseClaimsJws(accessToken)
+//                    .getBody();
+//            String userName = claims.get("user_name").toString();
         } catch (Exception e) {
-            model.addAttribute("username", "admin");
-            model.addAttribute("accessToken", result);
-            log.error("Exception {}", e);
+            log.error("cause {} msg {}", e.getCause(), e.getMessage());
+
+            e.printStackTrace();
         }
-        return "index";
+        return result;
+
     }
 
 
@@ -92,6 +95,7 @@ public class CodeClientController {
         log.warn("credentials {}", credentials);
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
         String token = details.getTokenValue();
+        log.warn("token {}", token);
         Claims claims = Jwts.parser()
                 .setSigningKey("dev".getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)

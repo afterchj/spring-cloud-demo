@@ -96,6 +96,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 //                .withClient("order-client")
 //                .secret(passwordEncoder.encode("order-secret-8888"))
 //                .authorizedGrantTypes("refresh_token", "authorization_code", "password")
+//                .redirectUris("http://localhost:6102/client-authcode/login")
 //                .accessTokenValiditySeconds(3600)
 //                .scopes("all")
 //                .and()
