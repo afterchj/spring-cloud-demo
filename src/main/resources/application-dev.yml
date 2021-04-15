@@ -7,4 +7,4 @@ spring:
   profiles: dev
   redis:
     host: 127.0.0.1
-    password: '@after'
+#    password: '@after'
