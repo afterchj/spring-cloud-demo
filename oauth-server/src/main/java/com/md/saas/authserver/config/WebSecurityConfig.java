@@ -1,5 +1,7 @@
 package com.md.saas.authserver.config;
 
+import com.md.saas.authserver.handler.CustomerLogoutSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private CustomerLogoutSuccessHandler logoutSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -30,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 允许匿名访问所有接口 主要是 oauth 接口
+     *
      * @param http
      * @throws Exception
      */
@@ -37,11 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/oauth/**", "/login", "/health", "/css/**").permitAll()
+                .antMatchers("/", "/error", "/oauth/**", "/login", "/health", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .permitAll()
+                .and().logout().logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll();
     }
 }
