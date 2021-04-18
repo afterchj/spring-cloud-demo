@@ -1,5 +1,7 @@
 package com.md.saas.oauthclientcode.config;
 
+import com.md.saas.oauthclientcode.hander.AuthExceptionEntryPoint;
+import com.md.saas.oauthclientcode.hander.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +34,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-
         accessTokenConverter.setSigningKey("dev");
         accessTokenConverter.setVerifierKey("dev");
         return accessTokenConverter;
@@ -41,13 +42,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private TokenStore jwtTokenStore;
 
+    @Autowired
+    private AuthExceptionEntryPoint authExceptionEntryPoint;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenStore(jwtTokenStore);
+    public void configure(ResourceServerSecurityConfigurer resources) {
+        resources.tokenStore(jwtTokenStore)
+                .authenticationEntryPoint(authExceptionEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login").permitAll();
+        http.authorizeRequests().antMatchers("/code", "/jwt", "/error").permitAll();
     }
 }

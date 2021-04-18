@@ -3,7 +3,12 @@ package com.md.saas.authserver;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Classname MainTest
@@ -27,4 +32,20 @@ public class MainTest {
         System.out.println(new BCryptPasswordEncoder().encode("user-secret-8888"));
         System.out.println(new BCryptPasswordEncoder().encode("order-secret-8888"));
     }
+
+    @Test
+    public void testLocalDate() {
+        long expire = 1618738536l;
+        LocalDateTime time2 =LocalDateTime.ofEpochSecond(expire,0,ZoneOffset.ofHours(8));
+        LocalDateTime now = LocalDateTime.now();
+        Long timestamp = now.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        LocalDateTime after = now.plus(3600, ChronoUnit.SECONDS);
+        System.out.println(time2.isAfter(now));
+        System.out.println(now.toEpochSecond(ZoneOffset.of("+8")));
+        System.out.println(timestamp);
+
+        System.out.println("now = " + now + ",after = " + after);
+        System.out.println(time2);
+    }
+
 }

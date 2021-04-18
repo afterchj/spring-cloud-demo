@@ -1,5 +1,6 @@
 package com.md.saas.authserver.config;
 
+import com.md.saas.authserver.handler.CustomerWebResponseExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,9 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomerWebResponseExceptionTranslator responseExceptionTranslator;
 
 //    @Autowired
 //    private TokenStore redisTokenStore;
@@ -85,6 +89,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 //        endpoints.authenticationManager(authenticationManager)
 //                .tokenStore(redisTokenStore)
 //                .userDetailsService(kiteUserDetailsService);
+
+        endpoints.exceptionTranslator(responseExceptionTranslator);
 
     }
 

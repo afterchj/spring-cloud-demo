@@ -1,5 +1,6 @@
 package com.md.saas.authserver.config;
 
+import com.md.saas.authserver.handler.CustomAuthExceptionEntryPoint;
 import com.md.saas.authserver.handler.CustomerLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomerLogoutSuccessHandler logoutSuccessHandler;
+
+    @Autowired
+    private CustomAuthExceptionEntryPoint exceptionEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,5 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and().logout().logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll();
+        //web 安全控制添加注册自定义的错误处理
+//        http.exceptionHandling().authenticationEntryPoint(exceptionEntryPoint);
     }
 }
