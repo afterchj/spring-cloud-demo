@@ -22,7 +22,7 @@ spring:
         min-idle: 0
     timeout: 100ms
 server:
-  port: 6001
+  port: 8001
 management:
   endpoint:
     health:
